@@ -1,4 +1,4 @@
-"use strict";
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyAesFxFXFPotiNYKBBBXSn1Ssz7Hn6F8L0",
@@ -91,29 +91,56 @@ const fadeOutWorks = () =>{
 }
 // SENDING EMAIL FORM
 const form = document.querySelector("#form");
+const button = document.querySelector('#sendMsg')
+let responseContiner = document.querySelector('.response')
 form.addEventListener("submit", (e) => {
   e.preventDefault()
   formMessageObj = {
     name: getInputValues('name'),
     email: getInputValues('email'),
     message: getInputValues('message')
-  }
-  saveMessage(formMessageObj);
+  }  
+  button.disabled = true;
+  saveMessage(formMessageObj)
+  .then(()=>{
+    responseContiner.innerHTML = "";
+    const prg = document.createElement("p");
+    prg.innerHTML = "You´re Message is been receved"
+    responseContiner.appendChild(prg)
+    form.reset()
+    setTimeout(() => {
+      responseContiner.innerHTML = ""
+      button.removeAttribute("disabled");
+    }, 2000);
+  })
 });
 
 const getInputValues = (id) =>{
   return document.querySelector(`#${id}`).value
 }
 const saveMessage = (msgObj) => {
-  const newMesg = formMessage.push()
-  newMesg.set(msgObj)
+  return new Promise((response , reject)=>{
+    const newMesg = formMessage.push()
+    response(newMesg.set(msgObj))
+  })
 }
 // VALIDATE EMAIL INPUT
-// const email = document.querySelector("#email");
-// email.addEventListener("input", (event) => {
-//   if (email.validity.typeMismatch) {
-//     email.setCustomValidity("Please enter you´re Email");
-//   } else {
-//     email.setCustomValidity("");
-//   }
-// });
+const email = document.querySelector("#email");
+email.addEventListener("input", (event) => {
+  if (email.validity.typeMismatch) {
+    email.setCustomValidity("Please enter you´re Email");
+  } else {
+    email.setCustomValidity("");
+  }
+});
+
+// VALIDATE NAME INPUT
+const name = document.querySelector("#name");
+name.addEventListener("input", (event) => {
+  format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+  if (format.test(name.value)) {
+    name.setCustomValidity("Please enter you´re Name");
+  } else {
+    name.setCustomValidity("");
+  }
+});
