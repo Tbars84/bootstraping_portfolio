@@ -1,3 +1,4 @@
 # Firebase cache
 .firebase/
 public/
+config.js

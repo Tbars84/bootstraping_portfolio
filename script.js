@@ -1,13 +1,3 @@
-
-// Initialize Firebase
-var config = {
-  apiKey: "AIzaSyAesFxFXFPotiNYKBBBXSn1Ssz7Hn6F8L0",
-  authDomain: "singupangular.firebaseapp.com",
-  databaseURL: "https://singupangular.firebaseio.com",
-  projectId: "singupangular",
-  storageBucket: "singupangular.appspot.com",
-  messagingSenderId: "80905957837"
-};
 firebase.initializeApp(config);
 const formMessage = firebase.database().ref(`formMessages`)
 let formMessageObj = {};
@@ -137,7 +127,7 @@ email.addEventListener("input", (event) => {
 // VALIDATE NAME INPUT
 const name = document.querySelector("#name");
 name.addEventListener("input", (event) => {
-  format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+  format = /[!@#$%^&*(),.?":{}|<>]/;
   if (format.test(name.value)) {
     name.setCustomValidity("Please enter you´re Name");
   } else {
